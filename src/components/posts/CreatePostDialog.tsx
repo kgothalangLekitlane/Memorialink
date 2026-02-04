@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, type ReactNode } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import {
   Dialog,
@@ -31,14 +31,14 @@ const initialState = {
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" disabled={pending} className="bg-accent text-accent-foreground hover:bg-accent/90">
+    <Button type="submit" disabled={pending} className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
       {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-      Create Post
+      Share
     </Button>
   );
 }
 
-export function CreatePostDialog() {
+export function CreatePostDialog({ children }: { children?: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [state, formAction] = useFormState(createPost, initialState);
   const { toast } = useToast();
@@ -64,10 +64,12 @@ export function CreatePostDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
-          <Plus className="mr-2 h-4 w-4" />
-          Create Post
-        </Button>
+        {children || (
+             <Button>
+                <Plus className="mr-2 h-4 w-4" />
+                Create Post
+            </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -89,7 +91,7 @@ export function CreatePostDialog() {
           </div>
 
           <div className="grid gap-2">
-            <Label>Date</Label>
+            <Label>Date of event</Label>
             <DateInput date={date} setDate={setDate} />
              {state?.errors?.date && <p className="text-sm text-destructive">{state.errors.date[0]}</p>}
           </div>
@@ -105,9 +107,6 @@ export function CreatePostDialog() {
           </div>
           
           <DialogFooter>
-            <DialogClose asChild>
-                <Button variant="ghost">Cancel</Button>
-            </DialogClose>
             <SubmitButton />
           </DialogFooter>
         </form>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -17,9 +17,10 @@ import { useToast } from '@/hooks/use-toast';
 
 interface SharePostDialogProps {
   postId: string;
+  children?: ReactNode;
 }
 
-export function SharePostDialog({ postId }: SharePostDialogProps) {
+export function SharePostDialog({ postId, children }: SharePostDialogProps) {
   const [shareUrl, setShareUrl] = useState('');
   const { toast } = useToast();
 
@@ -42,10 +43,12 @@ export function SharePostDialog({ postId }: SharePostDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="sm" className="w-full justify-start text-muted-foreground">
-          <Share2 className="mr-2 h-4 w-4" />
-          Share
-        </Button>
+        {children ?? (
+          <Button variant="ghost" size="sm" className="w-full justify-start text-muted-foreground">
+            <Share2 className="mr-2 h-4 w-4" />
+            Share
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>

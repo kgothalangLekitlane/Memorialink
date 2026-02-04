@@ -13,19 +13,9 @@ export default async function DashboardPage() {
   }, {} as Record<string, User>);
 
   return (
-    <div className="container mx-auto max-w-3xl px-4 py-8">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-            <h1 className="font-headline text-4xl font-bold">Home Feed</h1>
-            <p className="mt-2 text-muted-foreground">
-                See what others are sharing.
-            </p>
-        </div>
-        <CreatePostDialog />
-      </div>
-
+    <div className="container mx-auto max-w-xl px-0 py-8 sm:px-4">
       {posts.length > 0 ? (
-        <div className="mt-8 flex flex-col gap-6">
+        <div className="flex flex-col gap-8">
           {posts.map((post) => (
             <PostCard key={post.id} post={post} author={usersById[post.authorId]} />
           ))}
@@ -39,6 +29,9 @@ export default async function DashboardPage() {
             <p className="mt-2 max-w-sm text-muted-foreground">
                 It looks like the feed is empty. Why not create the first post?
             </p>
+             <div className="mt-6">
+                <CreatePostDialog />
+            </div>
         </div>
       )}
     </div>
