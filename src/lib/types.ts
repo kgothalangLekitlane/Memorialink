@@ -3,6 +3,9 @@ export type User = {
   email: string;
   name: string;
   avatarUrl?: string;
+  bio?: string;
+  location?: string;
+  website?: string;
 };
 
 export type Post = {

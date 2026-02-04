@@ -1,9 +1,33 @@
 import type { Post, User } from './types';
 
 export const users: User[] = [
-  { id: '1', email: 'user@example.com', name: 'Amelia', avatarUrl: 'https://picsum.photos/seed/amelia/100/100' },
-  { id: '2', email: 'jane@example.com', name: 'Jane Doe', avatarUrl: 'https://picsum.photos/seed/jane/100/100' },
-  { id: '3', email: 'john@example.com', name: 'John Smith', avatarUrl: 'https://picsum.photos/seed/john/100/100' },
+  { 
+    id: '1', 
+    email: 'user@example.com', 
+    name: 'Amelia', 
+    avatarUrl: 'https://picsum.photos/seed/amelia/100/100',
+    bio: 'Just a girl who loves to travel and code. Trying to see the world one line of code at a time.',
+    location: 'San Francisco, CA',
+    website: 'https://amelia.dev'
+  },
+  { 
+    id: '2', 
+    email: 'jane@example.com', 
+    name: 'Jane Doe', 
+    avatarUrl: 'https://picsum.photos/seed/jane/100/100',
+    bio: 'Photographer and artist. I see beauty in the mundane and try to capture it with my camera.',
+    location: 'New York, NY',
+    website: 'https://janedoe.photo'
+  },
+  { 
+    id: '3', 
+    email: 'john@example.com', 
+    name: 'John Smith', 
+    avatarUrl: 'https://picsum.photos/seed/john/100/100',
+    bio: 'Woodworker, father, and all-around maker. I build things with my hands and enjoy a good cup of coffee.',
+    location: 'Austin, TX',
+    website: 'https://johnsmithbuilds.com'
+  },
 ];
 
 export const posts: Post[] = [

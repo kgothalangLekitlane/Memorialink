@@ -4,7 +4,7 @@ import { PostCard } from "@/components/posts/PostCard";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, MapPin, Link as LinkIcon } from "lucide-react";
 
 interface ProfilePageProps {
   params: {
@@ -24,14 +24,33 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   return (
     <>
       <div className="container mx-auto max-w-3xl px-4 py-8">
-        <div className="mb-8 flex flex-col items-center gap-4 text-center md:flex-row md:text-left">
-          <Avatar className="h-24 w-24 border-4 border-primary">
+        <div className="mb-8 flex flex-col items-center gap-6 text-center md:flex-row md:gap-8 md:text-left">
+          <Avatar className="h-32 w-32 border-4 border-primary">
             {user.avatarUrl && <AvatarImage src={user.avatarUrl} alt={user.name} />}
-            <AvatarFallback className="text-4xl">{user.name.charAt(0)}</AvatarFallback>
+            <AvatarFallback className="text-5xl">{user.name.charAt(0)}</AvatarFallback>
           </Avatar>
-          <div>
+          <div className="flex-1">
             <h1 className="font-headline text-4xl font-bold">{user.name}</h1>
             <p className="mt-1 text-muted-foreground">{user.email}</p>
+
+            {user.bio && <p className="mt-4 max-w-prose text-foreground/80">{user.bio}</p>}
+            
+            <div className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-2 md:justify-start">
+              {user.location && (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <MapPin className="h-4 w-4" />
+                  <span>{user.location}</span>
+                </div>
+              )}
+              {user.website && (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <LinkIcon className="h-4 w-4" />
+                  <a href={user.website} target="_blank" rel="noopener noreferrer" className="hover:text-accent-foreground hover:underline">
+                    {user.website.replace(/^(https?:\/\/)?(www\.)?/, '')}
+                  </a>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
