@@ -19,7 +19,7 @@ export default function LoginPage() {
           </h1>
         </div>
         <p className="max-w-md text-center text-muted-foreground">
-            Welcome back! Access your collection of precious moments.
+            Welcome back! Log in to see what's new.
         </p>
       <Card className="w-full max-w-sm">
         <CardHeader>

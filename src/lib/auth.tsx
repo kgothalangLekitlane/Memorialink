@@ -3,9 +3,10 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import type { User } from './types';
 import { useRouter } from 'next/navigation';
+import { users } from './data';
 
 // Mock user for demonstration
-const MOCK_USER: User = { id: '1', email: 'user@example.com' };
+const MOCK_USER: User | undefined = users.find(u => u.id === '1');
 
 interface AuthContextType {
   user: User | null;
@@ -27,7 +28,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setTimeout(() => {
       // To test the logged out state, set the user to null
       // setUser(null); 
-      setUser(MOCK_USER);
+      setUser(MOCK_USER || null);
       setIsLoading(false);
     }, 1000);
   }, []);
@@ -37,7 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // In a real app, you'd make an API call
     console.log('Logging in with', email, pass);
     await new Promise(res => setTimeout(res, 500));
-    setUser(MOCK_USER);
+    setUser(MOCK_USER || null);
     setIsLoading(false);
     router.push('/dashboard');
   };
@@ -47,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // In a real app, you'd make an API call
     console.log('Signing up with', email, pass);
     await new Promise(res => setTimeout(res, 500));
-    setUser(MOCK_USER);
+    setUser(MOCK_USER || null);
     setIsLoading(false);
     router.push('/dashboard');
   };

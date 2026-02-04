@@ -1,11 +1,13 @@
 export type User = {
   id: string;
   email: string;
+  name: string;
+  avatarUrl?: string;
 };
 
-export type Memory = {
+export type Post = {
   id: string;
-  userId: string;
+  authorId: string;
   content: string;
   date: Date;
   linkUrl?: string;

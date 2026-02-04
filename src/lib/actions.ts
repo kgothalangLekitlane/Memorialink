@@ -1,19 +1,19 @@
 'use server';
 
 import { z } from 'zod';
-import { memories, users } from './data';
-import type { Memory } from './types';
+import { posts, users } from './data';
+import type { Post } from './types';
 import { revalidatePath } from 'next/cache';
 import { analyzeAndDecideLinkRelevance } from '@/ai/flows/analyze-and-decide-link-relevance';
 
-const memorySchema = z.object({
-  content: z.string().min(10, 'Memory is too short.'),
+const postSchema = z.object({
+  content: z.string().min(3, 'Post is too short.'),
   date: z.coerce.date(),
   linkUrl: z.string().url('Please enter a valid URL.').optional().or(z.literal('')),
 });
 
-export async function createMemory(prevState: any, formData: FormData) {
-  const validatedFields = memorySchema.safeParse({
+export async function createPost(prevState: any, formData: FormData) {
+  const validatedFields = postSchema.safeParse({
     content: formData.get('content'),
     date: formData.get('date'),
     linkUrl: formData.get('linkUrl'),
@@ -28,11 +28,11 @@ export async function createMemory(prevState: any, formData: FormData) {
   const { content, date, linkUrl } = validatedFields.data;
 
   // Mock user
-  const userId = '1';
+  const authorId = '1';
 
-  const newMemory: Memory = {
-    id: `mem-${Date.now()}`,
-    userId,
+  const newPost: Post = {
+    id: `post-${Date.now()}`,
+    authorId,
     content,
     date,
     createdAt: new Date(),
@@ -44,33 +44,41 @@ export async function createMemory(prevState: any, formData: FormData) {
         link: linkUrl,
         memoryContent: content,
       });
-      newMemory.linkUrl = linkUrl;
-      newMemory.shouldIncludeLink = analysis.shouldIncludeLink;
-      newMemory.analysisSummary = analysis.analysisSummary;
+      newPost.linkUrl = linkUrl;
+      newPost.shouldIncludeLink = analysis.shouldIncludeLink;
+      newPost.analysisSummary = analysis.analysisSummary;
     } catch (error) {
       console.error('AI analysis failed:', error);
-      // Decide how to handle AI failure. Here we'll just not include the link.
-      newMemory.shouldIncludeLink = false;
-      newMemory.analysisSummary = "AI analysis of the link failed.";
+      newPost.shouldIncludeLink = false;
+      newPost.analysisSummary = "AI analysis of the link failed.";
     }
   }
 
-  memories.unshift(newMemory);
+  posts.unshift(newPost);
 
   revalidatePath('/dashboard');
+  revalidatePath(`/profile/${authorId}`);
   
   return { success: true };
 }
 
-export async function getMemories() {
+export async function getPosts() {
   // In a real app, you'd fetch from a DB
-  return memories;
+  return posts.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 }
 
-export async function getMemoryById(id: string) {
-  return memories.find(m => m.id === id);
+export async function getPostById(id: string) {
+  return posts.find(p => p.id === id);
 }
 
 export async function getUsers() {
     return users;
+}
+
+export async function getUserById(id:string) {
+    return users.find(u => u.id === id);
+}
+
+export async function getPostsByUserId(userId: string) {
+    return posts.filter(post => post.authorId === userId).sort((a,b) => b.date.getTime() - a.date.getTime());
 }

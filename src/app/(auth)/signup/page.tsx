@@ -19,7 +19,7 @@ export default function SignUpPage() {
             </h1>
         </div>
         <p className="max-w-md text-center text-muted-foreground">
-            Create an account to start capturing and sharing your memories.
+            Join the community. Create an account to start sharing.
         </p>
       <Card className="w-full max-w-sm">
         <CardHeader>
