@@ -1,11 +1,8 @@
 import { getConversation, getUsers } from "@/lib/actions";
 import { notFound } from "next/navigation";
-import Link from 'next/link';
-import { ArrowLeft } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { MessageInput } from "@/components/messages/MessageInput";
 import { ChatMessage } from "@/components/messages/ChatMessage";
+import { ChatHeader } from "@/components/messages/ChatHeader";
 
 interface ChatPageProps {
   params: {
@@ -41,19 +38,12 @@ export default async function ChatPage({ params }: ChatPageProps) {
 
   return (
     <div className="flex h-[calc(100vh-4rem)] flex-col">
-        {/* Header */}
-        <header className="sticky top-16 z-10 flex items-center gap-4 border-b bg-card p-3">
-            <Button variant="ghost" size="icon" asChild className="h-9 w-9">
-                <Link href="/messages">
-                    <ArrowLeft />
-                </Link>
-            </Button>
-            <Avatar className="h-9 w-9 border">
-                {avatarUrl && <AvatarImage src={avatarUrl} />}
-                <AvatarFallback>{title?.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <h2 className="font-semibold">{title}</h2>
-        </header>
+        <ChatHeader
+          title={title}
+          avatarUrl={avatarUrl}
+          isGroup={conversation.isGroup}
+          partnerName={chatPartner?.name}
+        />
 
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4">
