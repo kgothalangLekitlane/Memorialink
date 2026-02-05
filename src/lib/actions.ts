@@ -1,8 +1,8 @@
 'use server';
 
 import { z } from 'zod';
-import { posts, users, stories } from './data';
-import type { Post, Story } from './types';
+import { posts, users, stories, conversations, messages } from './data';
+import type { Post, Story, Message, Conversation } from './types';
 import { revalidatePath } from 'next/cache';
 import { analyzeAndDecideLinkRelevance } from '@/ai/flows/analyze-and-decide-link-relevance';
 
@@ -21,6 +21,12 @@ const userSchema = z.object({
 
 const storySchema = z.object({
   imageUrl: z.string().url('A valid image URL is required.'),
+});
+
+const messageSchema = z.object({
+    content: z.string().optional(),
+    imageUrl: z.string().url().optional(),
+    conversationId: z.string(),
 });
 
 export async function createPost(prevState: any, formData: FormData) {
@@ -127,8 +133,45 @@ export async function updateUser(prevState: any, formData: FormData) {
     return { success: true };
 }
 
+export async function sendMessage(prevState: any, formData: FormData) {
+    const validatedFields = messageSchema.safeParse({
+        content: formData.get('content'),
+        imageUrl: formData.get('imageUrl'),
+        conversationId: formData.get('conversationId'),
+    });
+
+    if (!validatedFields.success) {
+        return { errors: validatedFields.error.flatten().fieldErrors };
+    }
+
+    const { content, imageUrl, conversationId } = validatedFields.data;
+    if (!content && !imageUrl) {
+        return { errors: { content: ['Message cannot be empty.'] }};
+    }
+    
+    const senderId = '1'; // Mock current user
+
+    const newMessage: Message = {
+        id: `msg-${Date.now()}`,
+        conversationId,
+        senderId,
+        createdAt: new Date(),
+        ...(content && { content }),
+        ...(imageUrl && { imageUrl }),
+    };
+
+    messages.push(newMessage);
+    
+    const conversation = conversations.find(c => c.id === conversationId);
+    if (conversation) {
+        conversation.messages.push(newMessage);
+    }
+
+    revalidatePath(`/messages/${conversationId}`);
+    return { success: true };
+}
+
 export async function getPosts() {
-  // In a real app, you'd fetch from a DB
   return posts.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 }
 
@@ -137,7 +180,6 @@ export async function getPostById(id: string) {
 }
 
 export async function getStories() {
-    // Return stories from the last 24 hours
     return stories.filter(s => new Date().getTime() - s.createdAt.getTime() < 24 * 60 * 60 * 1000)
         .sort((a,b) => a.createdAt.getTime() - b.createdAt.getTime());
 }
@@ -152,4 +194,29 @@ export async function getUserById(id:string) {
 
 export async function getPostsByUserId(userId: string) {
     return posts.filter(post => post.authorId === userId).sort((a,b) => b.date.getTime() - a.date.getTime());
+}
+
+export async function getConversations(userId: string) {
+    return conversations
+        .filter(c => c.participantIds.includes(userId))
+        .map(c => ({
+            ...c,
+            messages: c.messages.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+        }))
+        .sort((a,b) => b.messages[0].createdAt.getTime() - a.messages[0].createdAt.getTime());
+}
+
+export async function getConversation(conversationId: string) {
+    const conversation = conversations.find(c => c.id === conversationId);
+    if (conversation) {
+        return {
+            ...conversation,
+            messages: conversation.messages.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
+        }
+    }
+    return undefined;
+}
+
+export async function getMessages(conversationId: string) {
+    return messages.filter(m => m.conversationId === conversationId).sort((a,b) => a.createdAt.getTime() - b.createdAt.getTime());
 }

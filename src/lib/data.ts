@@ -1,4 +1,4 @@
-import type { Post, User, Story } from './types';
+import type { Post, User, Story, Conversation, Message } from './types';
 
 export const users: User[] = [
   { 
@@ -93,4 +93,32 @@ export const stories: Story[] = [
     mediaType: 'image',
     createdAt: new Date(Date.now() - 1000 * 60 * 25),
   },
+];
+
+
+export const messages: Message[] = [
+    { id: 'msg-1', conversationId: 'convo-1', senderId: '1', content: 'Hey Jane, how have you been?', createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24) },
+    { id: 'msg-2', conversationId: 'convo-1', senderId: '2', content: 'Hey! I\'m doing great, thanks for asking. Just got back from that Grand Canyon trip.', createdAt: new Date(Date.now() - 1000 * 60 * 60 * 23) },
+    { id: 'msg-3', conversationId: 'convo-1', senderId: '1', content: 'Oh wow, I saw your post! It looked amazing.', createdAt: new Date(Date.now() - 1000 * 60 * 60 * 22) },
+    { id: 'msg-4', conversationId: 'convo-1', senderId: '2', imageUrl: 'https://picsum.photos/seed/canyon-chat/400/300', createdAt: new Date(Date.now() - 1000 * 60 * 60 * 21) },
+    { id: 'msg-5', conversationId: 'convo-2', senderId: '3', content: 'Hey everyone, planning a hiking trip next month. Who\'s in?', createdAt: new Date(Date.now() - 1000 * 60 * 60 * 5) },
+    { id: 'msg-6', conversationId: 'convo-2', senderId: '1', content: 'I am so in! Where are we thinking of going?', createdAt: new Date(Date.now() - 1000 * 60 * 60 * 4) },
+    { id: 'msg-7', conversationId: 'convo-2', senderId: '2', content: 'Sounds fun! Count me in.', createdAt: new Date(Date.now() - 1000 * 60 * 60 * 3) },
+];
+
+export const conversations: Conversation[] = [
+    {
+        id: 'convo-1',
+        participantIds: ['1', '2'],
+        isGroup: false,
+        messages: messages.filter(m => m.conversationId === 'convo-1'),
+    },
+    {
+        id: 'convo-2',
+        participantIds: ['1', '2', '3'],
+        isGroup: true,
+        groupName: 'Hiking Crew',
+        groupAvatar: 'https://picsum.photos/seed/hiking-group/100/100',
+        messages: messages.filter(m => m.conversationId === 'convo-2'),
+    }
 ];

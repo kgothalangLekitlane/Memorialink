@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { LogOut, User as UserIcon, Home, PlusSquare, Settings } from 'lucide-react';
+import { LogOut, User as UserIcon, Home, PlusSquare, Settings, MessageSquare } from 'lucide-react';
 import { CreatePostDialog } from '../posts/CreatePostDialog';
 
 export function Header() {
@@ -34,6 +34,9 @@ export function Header() {
               <CreatePostDialog>
                 <Button variant="ghost" size="icon"><PlusSquare /></Button>
               </CreatePostDialog>
+              <Link href="/messages" passHref>
+                <Button variant="ghost" size="icon"><MessageSquare /></Button>
+              </Link>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-10 w-10 rounded-full">

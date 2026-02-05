@@ -26,3 +26,21 @@ export type Story = {
   mediaType: 'image' | 'video';
   createdAt: Date;
 };
+
+export type Message = {
+  id: string;
+  conversationId: string;
+  senderId: string;
+  content?: string;
+  imageUrl?: string;
+  createdAt: Date;
+};
+
+export type Conversation = {
+  id:string;
+  participantIds: string[];
+  isGroup: boolean;
+  groupName?: string;
+  groupAvatar?: string;
+  messages: Message[];
+};
