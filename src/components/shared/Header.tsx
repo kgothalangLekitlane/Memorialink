@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { LogOut, User as UserIcon, Home, PlusSquare } from 'lucide-react';
+import { LogOut, User as UserIcon, Home, PlusSquare, Settings } from 'lucide-react';
 import { CreatePostDialog } from '../posts/CreatePostDialog';
 
 export function Header() {
@@ -61,6 +61,12 @@ export function Header() {
                     <Link href={`/profile/${user.id}`}>
                       <UserIcon className="mr-2 h-4 w-4" />
                       <span>Profile</span>
+                    </Link>
+                  </DropdownMenuItem>
+                   <DropdownMenuItem asChild>
+                    <Link href="/settings">
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>Settings</span>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />

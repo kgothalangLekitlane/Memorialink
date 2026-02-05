@@ -18,3 +18,11 @@ export type Post = {
   shouldIncludeLink?: boolean;
   createdAt: Date;
 };
+
+export type Story = {
+  id: string;
+  authorId: string;
+  mediaUrl: string;
+  mediaType: 'image' | 'video';
+  createdAt: Date;
+};

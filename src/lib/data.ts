@@ -1,4 +1,4 @@
-import type { Post, User } from './types';
+import type { Post, User, Story } from './types';
 
 export const users: User[] = [
   { 
@@ -61,5 +61,36 @@ export const posts: Post[] = [
     content: 'Just tried the new coffee shop downtown. The latte art was almost too good to drink! ☕️',
     date: new Date(),
     createdAt: new Date(Date.now() - 1000 * 60 * 30)
+  },
+];
+
+export const stories: Story[] = [
+  {
+    id: 'story-1',
+    authorId: '2',
+    mediaUrl: 'https://picsum.photos/seed/story-jane/1080/1920',
+    mediaType: 'image',
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 2),
+  },
+  {
+    id: 'story-2',
+    authorId: '3',
+    mediaUrl: 'https://picsum.photos/seed/story-john/1080/1920',
+    mediaType: 'image',
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 5),
+  },
+   {
+    id: 'story-3',
+    authorId: '1',
+    mediaUrl: 'https://picsum.photos/seed/story-amelia-1/1080/1920',
+    mediaType: 'image',
+    createdAt: new Date(Date.now() - 1000 * 60 * 30),
+  },
+  {
+    id: 'story-4',
+    authorId: '1',
+    mediaUrl: 'https://picsum.photos/seed/story-amelia-2/1080/1920',
+    mediaType: 'image',
+    createdAt: new Date(Date.now() - 1000 * 60 * 25),
   },
 ];

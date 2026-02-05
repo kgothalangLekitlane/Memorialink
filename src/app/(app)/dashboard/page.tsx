@@ -2,6 +2,7 @@ import { getPosts, getUsers } from "@/lib/actions";
 import { CreatePostDialog } from "@/components/posts/CreatePostDialog";
 import { PostCard } from "@/components/posts/PostCard";
 import type { User } from "@/lib/types";
+import { StoryReel } from "@/components/stories/StoryReel";
 
 export default async function DashboardPage() {
   const posts = await getPosts();
@@ -14,8 +15,9 @@ export default async function DashboardPage() {
 
   return (
     <div className="container mx-auto max-w-xl px-0 py-8 sm:px-4">
+      <StoryReel />
       {posts.length > 0 ? (
-        <div className="flex flex-col gap-8">
+        <div className="mt-8 flex flex-col gap-8">
           {posts.map((post) => (
             <PostCard key={post.id} post={post} author={usersById[post.authorId]} />
           ))}
